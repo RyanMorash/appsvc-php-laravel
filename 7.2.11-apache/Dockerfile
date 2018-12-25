@@ -2,6 +2,7 @@ FROM php:7.2.11-apache
 MAINTAINER Azure App Services Container Images <appsvc-images@microsoft.com>
 
 COPY apache2.conf /bin/
+COPY laravel.conf /bin/
 COPY init_container.sh /bin/
 COPY hostingstart.html /home/site/wwwroot/hostingstart.html
 
@@ -98,12 +99,15 @@ RUN   \
    && chmod 777 /var/lock \
    && chmod 777 /bin/init_container.sh \
    && cp /bin/apache2.conf /etc/apache2/apache2.conf \
+   && cp /bin/laravel.conf /etc/apache2/sites-available/laravel.conf \
    && rm -rf /var/www/html \
    && rm -rf /var/log/apache2 \
    && mkdir -p /home/LogFiles \
    && ln -s /home/site/wwwroot /var/www/html \
    && ln -s /home/LogFiles /var/log/apache2 
 
+RUN a2dissite 000-default \
+   && a2ensite laravel
 
 RUN { \
                 echo 'opcache.memory_consumption=128'; \
