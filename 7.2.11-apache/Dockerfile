@@ -30,6 +30,7 @@ RUN apt-get update \
         curl \
         wget \
         tcptraceroute \
+        git \
     && chmod 755 /bin/init_container.sh \
     && echo "root:Docker!" | chpasswd \
     && echo "cd /home" >> /etc/bash.bashrc \
